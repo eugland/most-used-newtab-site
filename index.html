@@ -3,23 +3,134 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="A private Chrome new tab that ranks your most visited sites by frequency and recency.">
+  <meta name="description" content="A private Chrome new tab that ranks your most visited sites by frequency and recency—computed locally on your device.">
   <title>New Tab: More Recent Visited</title>
   <style>
-    :root{color-scheme:light dark;font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
-    body{max-width:720px;margin:0 auto;padding:72px 24px;background:#f6f7f9;color:#202124}
-    h1{font-size:clamp(2rem,6vw,3.5rem);line-height:1.05;letter-spacing:-.04em;margin:0 0 24px}
-    p{color:#5f6368;font-size:1.1rem}a{color:#1a73e8}
-    .pill{display:inline-block;margin-top:18px;padding:8px 14px;border:1px solid #d9e2f2;border-radius:999px;color:#1558b0;background:#fff}
-    @media(prefers-color-scheme:dark){body{background:#202124;color:#e8eaed}p{color:#bdc1c6}.pill{background:#2b2c2f;border-color:#3c4043;color:#8ab4f8}}
+    :root{
+      color-scheme:light dark;
+      --bg:#f6f7f9; --surface:#ffffff; --border:#e2e6ee;
+      --ink:#202124; --muted:#5f6368; --accent:#1a73e8; --accent-ink:#1558b0;
+      --shadow:0 10px 30px rgba(20,40,80,.10);
+      font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    }
+    @media(prefers-color-scheme:dark){
+      :root{
+        --bg:#202124; --surface:#2b2c2f; --border:#3c4043;
+        --ink:#e8eaed; --muted:#bdc1c6; --accent:#8ab4f8; --accent-ink:#8ab4f8;
+        --shadow:0 10px 30px rgba(0,0,0,.35);
+      }
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink)}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:960px;margin:0 auto;padding:0 24px}
+    img{max-width:100%;display:block}
+
+    /* Hero */
+    header{padding:80px 0 56px;text-align:center}
+    .icon{width:88px;height:88px;border-radius:20px;margin:0 auto 24px;box-shadow:var(--shadow)}
+    h1{font-size:clamp(2.1rem,6vw,3.4rem);line-height:1.05;letter-spacing:-.04em;margin:0 0 16px}
+    .lead{color:var(--muted);font-size:clamp(1.05rem,2.5vw,1.3rem);max-width:620px;margin:0 auto}
+    .cta{margin-top:32px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .btn{display:inline-block;padding:12px 22px;border-radius:999px;font-weight:600}
+    .btn.primary{background:var(--accent);color:#fff}
+    @media(prefers-color-scheme:dark){.btn.primary{color:#202124}}
+    .btn.ghost{border:1px solid var(--border);background:var(--surface);color:var(--ink)}
+
+    /* Marquee */
+    .marquee{margin:8px 0 8px;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border)}
+
+    section{padding:56px 0}
+    h2{font-size:clamp(1.5rem,4vw,2rem);letter-spacing:-.02em;margin:0 0 8px}
+    .sub{color:var(--muted);margin:0 0 32px}
+
+    /* Features */
+    .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px}
+    .card h3{margin:0 0 6px;font-size:1.05rem}
+    .card p{margin:0;color:var(--muted);font-size:.97rem}
+    .emoji{font-size:1.5rem;line-height:1;margin-bottom:12px}
+
+    /* Shots */
+    .shots{display:grid;gap:40px}
+    .shot figure{margin:0}
+    .shot img{border-radius:16px;box-shadow:var(--shadow);border:1px solid var(--border)}
+    .shot figcaption{margin-top:12px;color:var(--muted);font-size:.97rem;text-align:center}
+
+    /* Privacy strip */
+    .privacy{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:36px;text-align:center}
+    .privacy h2{margin-bottom:12px}
+    .privacy p{color:var(--muted);max-width:620px;margin:0 auto 20px}
+
+    footer{border-top:1px solid var(--border);padding:40px 0 64px;text-align:center;color:var(--muted);font-size:.92rem}
+    footer a{margin:0 10px}
   </style>
 </head>
 <body>
-  <main>
-    <h1>New Tab:<br>More Recent Visited</h1>
-    <p>A clean Chrome new tab that automatically ranks the websites you visit most frequently and recently.</p>
-    <p>Your browsing history and settings are processed locally. There are no accounts, ads, analytics, or developer-operated servers.</p>
-    <a class="pill" href="privacy.html">Read the privacy policy</a>
-  </main>
+  <header>
+    <div class="wrap">
+      <img class="icon" src="images/icon-128.png" alt="New Tab: More Recent Visited icon" width="88" height="88">
+      <h1>New Tab:<br>More Recent Visited</h1>
+      <p class="lead">A clean Chrome new tab that automatically ranks the websites you visit most frequently and recently—computed entirely on your device.</p>
+      <div class="cta">
+        <a class="btn primary" href="#screenshots">See it in action</a>
+        <a class="btn ghost" href="privacy.html">Privacy policy</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <img class="marquee" src="images/promo-marquee-1400x560.png" alt="New Tab: More Recent Visited overview" width="1400" height="560">
+  </div>
+
+  <section id="features">
+    <div class="wrap">
+      <h2>Built for the sites you actually use</h2>
+      <p class="sub">No feeds, no sponsored shortcuts, no dashboard clutter.</p>
+      <div class="features">
+        <div class="card"><div class="emoji">📊</div><h3>Ranked automatically</h3><p>Sites you visit often—and have used lately—rise to the top. No manual organizing.</p></div>
+        <div class="card"><div class="emoji">📌</div><h3>Pin &amp; hide</h3><p>Pin the sites that matter, hide the ones you don't want to see.</p></div>
+        <div class="card"><div class="emoji">🎛️</div><h3>Flexible controls</h3><p>Show 12 to 100 shortcuts. Rank by the last month, year, or all time.</p></div>
+        <div class="card"><div class="emoji">🚫</div><h3>Blocklist</h3><p>Block individual domains or wildcard patterns you never want ranked.</p></div>
+        <div class="card"><div class="emoji">🔍</div><h3>Search or go</h3><p>Search Google or type a URL directly from the new tab.</p></div>
+        <div class="card"><div class="emoji">🌓</div><h3>Light &amp; dark</h3><p>Automatic appearance that follows your system theme.</p></div>
+        <div class="card"><div class="emoji">🌐</div><h3>51 languages</h3><p>Localized across all Chrome-supported languages.</p></div>
+        <div class="card"><div class="emoji">⚡</div><h3>Instant</h3><p>Fast local caching means every new tab opens immediately.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screenshots">
+    <div class="wrap">
+      <h2>A closer look</h2>
+      <p class="sub">Every screen is generated locally from your own history.</p>
+      <div class="shots">
+        <div class="shot"><figure><img src="images/screenshot-1-overview.png" alt="Most visited sites in a new tab" width="1280" height="800"><figcaption>Your most visited sites. Ready in every new tab.</figcaption></figure></div>
+        <div class="shot"><figure><img src="images/screenshot-2-ranking.png" alt="Sites ranked by frequency and recency" width="1280" height="800"><figcaption>Ranked by how often—and how recently—you visit.</figcaption></figure></div>
+        <div class="shot"><figure><img src="images/screenshot-3-customize.png" alt="Pinning and hiding sites" width="1280" height="800"><figcaption>Pin what matters. Hide what doesn't.</figcaption></figure></div>
+        <div class="shot"><figure><img src="images/screenshot-4-settings.png" alt="Settings and controls" width="1280" height="800"><figcaption>Flexible controls without dashboard clutter.</figcaption></figure></div>
+        <div class="shot"><figure><img src="images/screenshot-5-dark-private.png" alt="Dark mode, local and private" width="1280" height="800"><figcaption>Local by design. No accounts. No tracking.</figcaption></figure></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="privacy">
+        <h2>Private by design</h2>
+        <p>Your browsing history is processed entirely inside Chrome. It is never uploaded or sent to the developer. There are no accounts, ads, analytics, or external tracking.</p>
+        <a class="btn ghost" href="privacy.html">Read the full privacy policy</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <a href="privacy.html">Privacy policy</a>
+      <a href="https://github.com/eugland/most-used-newtab-site">GitHub</a>
+      <p>© 2026 New Tab: More Recent Visited</p>
+    </div>
+  </footer>
 </body>
 </html>
