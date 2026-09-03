@@ -38,8 +38,12 @@
     @media(prefers-color-scheme:dark){.btn.primary{color:#202124}}
     .btn.ghost{border:1px solid var(--border);background:var(--surface);color:var(--ink)}
 
-    /* Marquee */
-    .marquee{margin:8px 0 8px;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border)}
+    /* Demo video */
+    .demo{padding:8px 0 36px;text-align:center}
+    .demo h2{margin-bottom:6px}
+    .demo .sub{margin-bottom:24px}
+    .promo-video{width:100%;display:block;border-radius:20px;box-shadow:var(--shadow);border:1px solid var(--border);background:#111}
+    .music-credit{margin:12px 0 0;color:var(--muted);font-size:.82rem}
 
     section{padding:56px 0}
     h2{font-size:clamp(1.5rem,4vw,2rem);letter-spacing:-.02em;margin:0 0 8px}
@@ -76,14 +80,22 @@
       <div class="cta">
         <!-- TODO: replace href with the Chrome Web Store listing URL after publishing (chrome.google.com/webstore/detail/<slug>/<id>) -->
         <a class="btn primary" href="https://chromewebstore.google.com/" target="_blank" rel="noopener">Add to Chrome</a>
-        <a class="btn ghost" href="#screenshots">See it in action</a>
+        <a class="btn ghost" href="#demo">Watch the 12-second demo</a>
       </div>
     </div>
   </header>
 
-  <div class="wrap">
-    <img class="marquee" src="images/promo-marquee-1400x560.png" alt="New Tab: More Recent Visited overview" width="1400" height="560">
-  </div>
+  <section class="demo" id="demo">
+    <div class="wrap">
+      <h2>See it in 12 seconds</h2>
+      <p class="sub">A faster way to reach the sites you actually use.</p>
+      <video class="promo-video" controls playsinline preload="metadata" poster="images/promo-marquee-1400x560.png" aria-label="New Tab: More Recent Visited promotional video">
+        <source src="images/new-tab-promo-dynamic-12s.mp4" type="video/mp4">
+        Your browser does not support embedded video. <a href="images/new-tab-promo-dynamic-12s.mp4">Download the promo video</a>.
+      </video>
+      <p class="music-credit">Music: “Close Up” by Michael Ramir C., available under the <a href="https://mixkit.co/license/#musicFree" target="_blank" rel="noopener">Mixkit Stock Music Free License</a>.</p>
+    </div>
+  </section>
 
   <section id="features">
     <div class="wrap">
