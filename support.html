@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Support: browse known issues and report a problem.">
+  <title>Support</title>
+  <style>
+    :root{
+      color-scheme:light dark;
+      --bg:#f6f7f9; --surface:#ffffff; --border:#e2e6ee;
+      --ink:#202124; --muted:#5f6368; --accent:#1a73e8;
+      --shadow:0 10px 30px rgba(20,40,80,.10);
+      font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    }
+    @media(prefers-color-scheme:dark){
+      :root{--bg:#202124;--surface:#2b2c2f;--border:#3c4043;--ink:#e8eaed;--muted:#bdc1c6;--shadow:0 10px 30px rgba(0,0,0,.35)}
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink)}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:760px;margin:0 auto;padding:0 24px}
+    header{padding:56px 0 24px}
+    .back{font-size:.92rem;color:var(--muted);display:inline-block;margin-bottom:16px}
+    h1{font-size:clamp(1.8rem,5vw,2.6rem);letter-spacing:-.03em;margin:0 0 8px}
+    .lead{color:var(--muted);margin:0}
+    section{padding:24px 0}
+    h2{font-size:1.25rem;margin:0 0 12px}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:20px}
+    label{display:block;font-weight:600;margin:12px 0 5px}
+    input,textarea{width:100%;padding:9px 11px;border:1px solid var(--border);border-radius:9px;background:var(--bg);color:var(--ink);font:inherit}
+    textarea{min-height:120px;resize:vertical}
+    input:focus,textarea:focus{outline:none;border-color:var(--accent)}
+    .btn{display:inline-block;margin-top:16px;padding:11px 20px;border-radius:999px;border:none;background:var(--accent);color:#fff;font:inherit;font-weight:600;cursor:pointer}
+    @media(prefers-color-scheme:dark){.btn{color:#202124}}
+    .note{font-size:.85rem;color:var(--muted);margin-top:10px}
+    ul.issues{list-style:none;padding:0;margin:0}
+    ul.issues li{border-bottom:1px solid var(--border);padding:11px 0}
+    ul.issues li:last-child{border-bottom:none}
+    .issue-title{font-weight:600}
+    .issue-meta{font-size:.82rem;color:var(--muted)}
+    .muted{color:var(--muted)}
+    footer{border-top:1px solid var(--border);padding:32px 0 56px;text-align:center;color:var(--muted);font-size:.9rem;margin-top:24px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a class="back" id="back" href="index.html">&larr; Back</a>
+      <h1 id="title">Support</h1>
+      <p class="lead" id="lead"></p>
+    </header>
+
+    <section>
+      <h2>Report a problem or request a feature</h2>
+      <div class="card">
+        <label for="f-title">Summary</label>
+        <input id="f-title" type="text" placeholder="Short description of the issue">
+        <label for="f-body">Details</label>
+        <textarea id="f-body" placeholder="What happened? What did you expect? Steps to reproduce, your Chrome version, etc."></textarea>
+        <button class="btn" id="submit">Open a GitHub issue &rarr;</button>
+        <p class="note">This opens a pre-filled issue on GitHub (you'll click Submit there). A free GitHub account is required. Nothing is sent from this page directly.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Known issues</h2>
+      <div id="issues"><p class="muted">Loading…</p></div>
+    </section>
+
+    <footer><div class="wrap"><a href="index.html">Home</a></div></footer>
+  </div>
+
+  <script>
+    const REPO = 'eugland/apps';
+    const APPS = {
+      'new-tab': { label: 'new-tab', name: 'New Tab: More Recent Visited', accent: '#1a73e8', back: 'new-tab/index.html' },
+      'wechat':  { label: 'wechat',  name: 'WeChat Image Download',        accent: '#07c160', back: 'wechat/index.html' }
+    };
+    const key = new URLSearchParams(location.search).get('app');
+    const app = APPS[key] || APPS['new-tab'];
+
+    document.documentElement.style.setProperty('--accent', app.accent);
+    document.getElementById('title').textContent = app.name + ' — Support';
+    document.getElementById('lead').textContent = 'Browse known issues below, or report a new one.';
+    document.getElementById('back').href = app.back;
+
+    // Submit -> prefilled GitHub new-issue URL (no backend/token needed).
+    document.getElementById('submit').addEventListener('click', () => {
+      const title = document.getElementById('f-title').value.trim() || 'Issue report';
+      const body = document.getElementById('f-body').value.trim();
+      const url = `https://github.com/${REPO}/issues/new`
+        + `?labels=${encodeURIComponent(app.label)}`
+        + `&title=${encodeURIComponent('[' + app.label + '] ' + title)}`
+        + `&body=${encodeURIComponent(body)}`;
+      window.open(url, '_blank', 'noopener');
+    });
+
+    // Read open issues with this app's label (public repo, no auth).
+    async function loadIssues() {
+      const box = document.getElementById('issues');
+      try {
+        const r = await fetch(`https://api.github.com/repos/${REPO}/issues`
+          + `?state=open&labels=${encodeURIComponent(app.label)}&per_page=30`,
+          { headers: { Accept: 'application/vnd.github+json' } });
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        const items = (await r.json()).filter((i) => !i.pull_request);
+        if (!items.length) { box.innerHTML = '<p class="muted">No open issues. 🎉</p>'; return; }
+        const ul = document.createElement('ul');
+        ul.className = 'issues';
+        for (const it of items) {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.className = 'issue-title';
+          a.href = it.html_url; a.target = '_blank'; a.rel = 'noopener';
+          a.textContent = it.title;
+          const meta = document.createElement('div');
+          meta.className = 'issue-meta';
+          meta.textContent = `#${it.number} · ${it.comments} comment${it.comments === 1 ? '' : 's'}`;
+          li.appendChild(a); li.appendChild(meta);
+          ul.appendChild(li);
+        }
+        box.innerHTML = '';
+        box.appendChild(ul);
+      } catch (e) {
+        box.innerHTML = `<p class="muted">Couldn't load issues right now. `
+          + `<a href="https://github.com/${REPO}/issues?q=is%3Aopen+label%3A${app.label}" target="_blank" rel="noopener">View on GitHub</a>.</p>`;
+      }
+    }
+    loadIssues();
+  </script>
+</body>
+</html>
