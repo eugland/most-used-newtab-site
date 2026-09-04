@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="One-click download of every image from a WeChat (mp.weixin.qq.com) post. Icons filtered out, files saved with sortable, author-tagged names. Runs entirely on your device.">
+  <title>WeChat Image Downloader</title>
+  <style>
+    :root{
+      color-scheme:light dark;
+      --bg:#f6f7f9; --surface:#ffffff; --border:#e2e6ee;
+      --ink:#202124; --muted:#5f6368; --accent:#07c160; --accent-ink:#059c4d;
+      --shadow:0 10px 30px rgba(20,40,80,.10);
+      font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    }
+    @media(prefers-color-scheme:dark){
+      :root{
+        --bg:#202124; --surface:#2b2c2f; --border:#3c4043;
+        --ink:#e8eaed; --muted:#bdc1c6; --accent:#4bd287; --accent-ink:#4bd287;
+        --shadow:0 10px 30px rgba(0,0,0,.35);
+      }
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink)}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:960px;margin:0 auto;padding:0 24px}
+    img{max-width:100%;height:auto;display:block}
+
+    header{padding:80px 0 56px;text-align:center}
+    .icon{width:88px;height:88px;border-radius:20px;margin:0 auto 24px;box-shadow:var(--shadow)}
+    h1{font-size:clamp(2.1rem,6vw,3.4rem);line-height:1.05;letter-spacing:-.04em;margin:0 0 16px}
+    .lead{color:var(--muted);font-size:clamp(1.05rem,2.5vw,1.3rem);max-width:640px;margin:0 auto}
+    .cta{margin-top:32px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .btn{display:inline-block;padding:12px 22px;border-radius:999px;font-weight:600}
+    .btn.primary{background:var(--accent);color:#fff}
+    @media(prefers-color-scheme:dark){.btn.primary{color:#202124}}
+    .btn.ghost{border:1px solid var(--border);background:var(--surface);color:var(--ink)}
+
+    section{padding:56px 0}
+    h2{font-size:clamp(1.5rem,4vw,2rem);letter-spacing:-.02em;margin:0 0 8px}
+    .sub{color:var(--muted);margin:0 0 32px}
+
+    /* How it works */
+    .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+    .step{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;position:relative}
+    .step .n{width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:.9rem;margin-bottom:12px}
+    @media(prefers-color-scheme:dark){.step .n{color:#202124}}
+    .step h3{margin:0 0 6px;font-size:1.05rem}
+    .step p{margin:0;color:var(--muted);font-size:.97rem}
+
+    .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px}
+    .card h3{margin:0 0 6px;font-size:1.05rem}
+    .card p{margin:0;color:var(--muted);font-size:.97rem}
+    .emoji{font-size:1.5rem;line-height:1;margin-bottom:12px}
+
+    .shots{display:grid;gap:40px}
+    .shot figure{margin:0}
+    .shot img{border-radius:16px;box-shadow:var(--shadow);border:1px solid var(--border)}
+    .shot figcaption{margin-top:12px;color:var(--muted);font-size:.97rem;text-align:center}
+
+    .privacy{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:36px;text-align:center}
+    .privacy h2{margin-bottom:12px}
+    .privacy p{color:var(--muted);max-width:640px;margin:0 auto 20px}
+
+    footer{border-top:1px solid var(--border);padding:40px 0 64px;text-align:center;color:var(--muted);font-size:.92rem}
+    footer a{margin:0 10px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <img class="icon" src="images/wx-icon-128.png" alt="WeChat Image Downloader icon" width="88" height="88">
+      <h1>WeChat Image<br>Downloader</h1>
+      <p class="lead">Save every image from a WeChat article or photo post in one click. Icons filtered out automatically, files named so they sort by date and author.</p>
+      <div class="cta">
+        <!-- Replace href with the Chrome Web Store URL once published -->
+        <a class="btn primary" href="#" target="_blank" rel="noopener">Add to Chrome</a>
+        <a class="btn ghost" href="#how">How it works</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="how">
+    <div class="wrap">
+      <h2>Three steps</h2>
+      <p class="sub">No copying URLs, no right-click-save-as, no icons in your folder.</p>
+      <div class="steps">
+        <div class="step"><div class="n">1</div><h3>Open a post</h3><p>Visit any WeChat article or image post on mp.weixin.qq.com.</p></div>
+        <div class="step"><div class="n">2</div><h3>Click the button</h3><p>A small download button sits right by the images. One click.</p></div>
+        <div class="step"><div class="n">3</div><h3>Done</h3><p>Every real photo is saved to your Downloads folder — no icons, no clutter.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <h2>Made for WeChat posts</h2>
+      <p class="sub">Handles both classic articles and the newer photo-gallery layout.</p>
+      <div class="features">
+        <div class="card"><div class="emoji">⬇️</div><h3>One-click, all images</h3><p>Grabs the whole post at once — not one image at a time.</p></div>
+        <div class="card"><div class="emoji">🚫</div><h3>Icons filtered out</h3><p>Logos, avatars and QR codes are skipped. Only the real photos.</p></div>
+        <div class="card"><div class="emoji">🗂️</div><h3>Sortable filenames</h3><p>Saved as <code>wx_author_20260526_0331_01.jpg</code> — sorts by date automatically.</p></div>
+        <div class="card"><div class="emoji">🖼️</div><h3>Full quality</h3><p>Fetches the original image, not the compressed web preview.</p></div>
+        <div class="card"><div class="emoji">⚙️</div><h3>Your settings</h3><p>Custom filename prefix, button position, and icon-size filter.</p></div>
+        <div class="card"><div class="emoji">🔒</div><h3>Local &amp; private</h3><p>Runs entirely in your browser. No accounts, no servers, no tracking.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screenshots">
+    <div class="wrap">
+      <h2>A closer look</h2>
+      <p class="sub">Screenshots from a real WeChat post.</p>
+      <div class="shots">
+        <div class="shot"><figure><img src="images/wx-shot-1-button.png" alt="Download button beside the images on a WeChat post" width="1280" height="800"><figcaption>The download button sits right by the images.</figcaption></figure></div>
+        <div class="shot"><figure><img src="images/wx-shot-2-downloading.png" alt="Downloading all images at once" width="1280" height="800"><figcaption>One click saves every image in the post.</figcaption></figure></div>
+        <div class="shot"><figure><img src="images/wx-shot-3-settings.png" alt="Extension settings popup" width="1280" height="800"><figcaption>Prefix, button corner, and icon-size filter.</figcaption></figure></div>
+        <div class="shot"><figure><img src="images/wx-shot-4-files.png" alt="Saved files with sortable names" width="1280" height="800"><figcaption>Files named to sort by date and author.</figcaption></figure></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="privacy">
+        <h2>Private by design</h2>
+        <p>Images are fetched and saved entirely inside your browser. Nothing is uploaded to the developer. There are no accounts, ads, analytics, or external tracking.</p>
+        <a class="btn ghost" href="privacy.html">Read the full privacy policy</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <a href="index.html">New Tab extension</a>
+      <a href="privacy.html">Privacy policy</a>
+      <a href="https://github.com/eugland/most-used-newtab-site">GitHub</a>
+      <p>© 2026 WeChat Image Downloader</p>
+    </div>
+  </footer>
+</body>
+</html>
